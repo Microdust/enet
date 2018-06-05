@@ -393,6 +393,10 @@ typedef struct _ENetHost
    size_t               duplicatePeers;              /**< optional number of allowed peers from duplicate IPs, defaults to ENET_PROTOCOL_MAXIMUM_PEER_ID */
    size_t               maximumPacketSize;           /**< the maximum allowable packet size that may be sent or received on a peer */
    size_t               maximumWaitingData;          /**< the maximum aggregate amount of buffer space a peer may use waiting for packets to be delivered */
+
+
+   enet_uint32			applicationId;				/**< MicroNet, application id for connection*/
+
 } ENetHost;
 
 /**
@@ -449,6 +453,7 @@ typedef struct _ENetEvent
   ENet.
   @returns 0 on success, < 0 on failure
 */
+
 ENET_API int enet_initialize (void);
 
 /** 
@@ -557,9 +562,9 @@ ENET_API void         enet_packet_destroy (ENetPacket *);
 ENET_API int          enet_packet_resize  (ENetPacket *, size_t);
 ENET_API enet_uint32  enet_crc32 (const ENetBuffer *, size_t);
                 
-ENET_API ENetHost * enet_host_create (const ENetAddress *, size_t, size_t, enet_uint32, enet_uint32);
+ENET_API ENetHost * enet_host_create (const ENetAddress *, size_t, size_t, enet_uint32, enet_uint32, enet_uint32);
 ENET_API void       enet_host_destroy (ENetHost *);
-ENET_API ENetPeer * enet_host_connect (ENetHost *, const ENetAddress *, size_t, enet_uint32);
+ENET_API ENetPeer * enet_host_connect (ENetHost *, const ENetAddress *, size_t);
 ENET_API int        enet_host_check_events (ENetHost *, ENetEvent *);
 ENET_API int        enet_host_service (ENetHost *, ENetEvent *, enet_uint32);
 ENET_API void       enet_host_flush (ENetHost *);
@@ -570,6 +575,10 @@ ENET_API void       enet_host_channel_limit (ENetHost *, size_t);
 ENET_API void       enet_host_bandwidth_limit (ENetHost *, enet_uint32, enet_uint32);
 extern   void       enet_host_bandwidth_throttle (ENetHost *);
 extern  enet_uint32 enet_host_random_seed (void);
+
+ENET_API void		micronet_broadcast(ENetHost *, enet_uint8, const void *, size_t, enet_uint32);
+ENET_API void		micronet_send(ENetPeer *, enet_uint8, const void *, size_t, enet_uint32);
+
 
 ENET_API int                 enet_peer_send (ENetPeer *, enet_uint8, ENetPacket *);
 ENET_API ENetPacket *        enet_peer_receive (ENetPeer *, enet_uint8 * channelID);
