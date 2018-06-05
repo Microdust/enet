@@ -26,7 +26,7 @@
     at any given time.
 */
 ENetHost *
-enet_host_create (const ENetAddress * address, size_t peerCount, size_t channelLimit, enet_uint32 incomingBandwidth, enet_uint32 outgoingBandwidth)
+enet_host_create (const ENetAddress * address, size_t peerCount, size_t channelLimit, enet_uint32 incomingBandwidth, enet_uint32 outgoingBandwidth, enet_uint32 applicationId)
 {
     ENetHost * host;
     ENetPeer * currentPeer;
@@ -110,6 +110,8 @@ enet_host_create (const ENetAddress * address, size_t peerCount, size_t channelL
 
     host -> intercept = NULL;
 
+	host -> applicationId = applicationId;
+
     enet_list_clear (& host -> dispatchQueue);
 
     for (currentPeer = host -> peers;
@@ -165,13 +167,12 @@ enet_host_destroy (ENetHost * host)
     @param host host seeking the connection
     @param address destination for the connection
     @param channelCount number of channels to allocate
-    @param data user data supplied to the receiving host 
     @returns a peer representing the foreign host on success, NULL on failure
     @remarks The peer returned will have not completed the connection until enet_host_service()
     notifies of an ENET_EVENT_TYPE_CONNECT event for the peer.
 */
 ENetPeer *
-enet_host_connect (ENetHost * host, const ENetAddress * address, size_t channelCount, enet_uint32 data)
+enet_host_connect (ENetHost * host, const ENetAddress * address, size_t channelCount)
 {
     ENetPeer * currentPeer;
     ENetChannel * channel;
@@ -245,7 +246,7 @@ enet_host_connect (ENetHost * host, const ENetAddress * address, size_t channelC
     command.connect.packetThrottleAcceleration = ENET_HOST_TO_NET_32 (currentPeer -> packetThrottleAcceleration);
     command.connect.packetThrottleDeceleration = ENET_HOST_TO_NET_32 (currentPeer -> packetThrottleDeceleration);
     command.connect.connectID = currentPeer -> connectID;
-    command.connect.data = ENET_HOST_TO_NET_32 (data);
+    command.connect.data = ENET_HOST_TO_NET_32 (host->applicationId);
  
     enet_peer_queue_outgoing_command (currentPeer, & command, NULL, 0, 0);
 

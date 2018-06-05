@@ -1094,6 +1094,9 @@ enet_protocol_handle_incoming_commands (ENetHost * host, ENetEvent * event)
           break;
 
        case ENET_PROTOCOL_COMMAND_CONNECT:
+		   if (ENET_NET_TO_HOST_32(command->connect.data) != host->applicationId)
+			   break;
+		
           if (peer != NULL)
             goto commandError;
           peer = enet_protocol_handle_connect (host, header, command);
