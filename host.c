@@ -277,6 +277,28 @@ enet_host_broadcast (ENetHost * host, enet_uint8 channelID, ENetPacket * packet)
       enet_packet_destroy (packet);
 }
 
+void micronet_broadcast(ENetHost * host, enet_uint8 channelId, const void * data, size_t dataLength, enet_uint32 flags)
+{
+	ENetPacket * packet = enet_packet_create(data, dataLength, flags);
+
+	ENetPeer * currentPeer;
+
+	for (currentPeer = host->peers;
+		currentPeer < &host->peers[host->peerCount];
+		++currentPeer)
+	{
+		if (currentPeer->state != ENET_PEER_STATE_CONNECTED)
+			continue;
+
+		enet_peer_send(currentPeer, channelId, packet);
+	}
+
+	if (packet->referenceCount == 0)
+		enet_packet_destroy(packet);
+
+}
+
+
 /** Sets the packet compressor the host should use to compress and decompress packets.
     @param host host to enable or disable compression for
     @param compressor callbacks for for the packet compressor; if NULL, then compression is disabled
