@@ -79,7 +79,7 @@ enet_protocol_dispatch_incoming_commands (ENetHost * host, ENetEvent * event)
            
        case ENET_PEER_STATE_ZOMBIE:
            host -> recalculateBandwidthLimits = 1;
-
+		   printf("Zombie");
            event -> type = ENET_EVENT_TYPE_DISCONNECT;
            event -> peer = peer;
            event -> data = peer -> eventData;
