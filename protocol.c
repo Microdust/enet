@@ -1914,3 +1914,16 @@ enet_host_service (ENetHost * host, ENetEvent * event, enet_uint32 timeout)
     return 0; 
 }
 
+int micronet_socket_send(ENetHost * host, const ENetAddress * addr, const void * data, size_t dataLength)
+{
+
+	ENetBuffer * buffer = (ENetBuffer *)enet_malloc(sizeof(dataLength));
+//	buffer = malloc(sizeof(dataLength));
+
+	buffer->data = data;
+	buffer -> dataLength = dataLength;
+
+	return enet_socket_send(host->socket, &addr, buffer, host->bufferCount);
+}
+
+

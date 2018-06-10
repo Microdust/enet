@@ -309,11 +309,7 @@ enet_socket_destroy (ENetSocket socket)
       closesocket (socket);
 }
 
-int
-enet_socket_send (ENetSocket socket,
-                  const ENetAddress * address,
-                  const ENetBuffer * buffers,
-                  size_t bufferCount)
+int enet_socket_send (ENetSocket socket, const ENetAddress * address, const ENetBuffer * buffers, size_t bufferCount)
 {
     struct sockaddr_in sin;
     DWORD sentLength;

@@ -578,7 +578,7 @@ extern  enet_uint32 enet_host_random_seed (void);
 
 ENET_API void		micronet_broadcast(ENetHost *, enet_uint8, const void *, size_t, enet_uint32);
 ENET_API void		micronet_send(ENetPeer *, enet_uint8, const void *, size_t, enet_uint32);
-
+ENET_API int        micronet_socket_send(ENetHost *, const ENetAddress *, const void *, size_t);
 
 ENET_API int                 enet_peer_send (ENetPeer *, enet_uint8, ENetPacket *);
 ENET_API ENetPacket *        enet_peer_receive (ENetPeer *, enet_uint8 * channelID);
